@@ -1,8 +1,12 @@
 ﻿<Solution>
   <Project Path="UniTask.csproj" />
   <Project Path="UniTask.Linq.csproj" />
+  <Project Path="WordDestroyerUniTest.csproj" />
+  <Project Path="WordDestroyer.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="UniTask.Addressables.csproj" />
+  <Project Path="GeneralCommonUnitTest.csproj" />
+  <Project Path="GeneralCommon.csproj" />
   <Project Path="UniTask.TextMeshPro.csproj" />
   <Project Path="UniTask.DOTween.csproj" />
   <Project Path="UniTask.Editor.csproj" />
