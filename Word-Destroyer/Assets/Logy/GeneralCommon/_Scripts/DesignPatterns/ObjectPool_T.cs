@@ -1,0 +1,103 @@
+using System.Collections.Generic;
+using UnityEngine.Events;
+
+namespace Logy.GeneralCommonV01
+{
+    public class ObjectPool<T>
+    {
+        private Queue<T> _idleQueue = new();
+        private HashSet<T> _usingHashSet = new();
+
+        public CreateEvent createEvent;
+        public UnityAction<T> destoryEvent;
+
+        public delegate T CreateEvent();
+        public int idleCount => _idleQueue.Count;
+        public int usingCount => _usingHashSet.Count;
+
+        public ObjectPool(CreateEvent _createEvent, UnityAction<T> _destoryEvent = null, ushort _startAmount = 0)
+        {
+            createEvent = _createEvent;
+            destoryEvent = _destoryEvent;
+
+            BuildObject(_startAmount);
+        }
+
+        private void BuildObject(ushort _startAmount)
+        {
+            while (_idleQueue.Count < _startAmount)
+            {
+                if (createEvent != null)
+                {
+                    T _object = createEvent();
+                    _idleQueue.Enqueue(_object);
+                }
+                else
+                {
+                    Debug.Log($"{nameof(createEvent)} is null");
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get object.
+        /// </summary>
+        public T Get()
+        {
+            if (createEvent == null)
+            {
+                Debug.Log($"{nameof(CreateEvent)} is null");
+                return default;
+            }
+
+            T _object;
+            if (_idleQueue.Count > 0)
+                _object = _idleQueue.Dequeue();
+            else
+                _object = createEvent();
+
+            _usingHashSet.Add(_object);
+            return _object;
+        }
+
+        /// <summary>
+        /// Release object.
+        /// </summary>
+        public void Release(T _object)
+        {
+            if (_usingHashSet.Contains(_object))
+                _usingHashSet.Remove(_object);
+
+            _idleQueue.Enqueue(_object);
+        }
+
+        /// <summary>
+        /// Destory object.
+        /// </summary>
+        public void Destory()
+        {
+            ClearUseingList();
+            ClearIdleQueue();
+        }
+
+        private void ClearUseingList()
+        {
+            foreach (T _object in _usingHashSet)
+            {
+                destoryEvent?.Invoke(_object);
+            }
+
+            _usingHashSet.Clear();
+        }
+
+        private void ClearIdleQueue()
+        {
+            while (_idleQueue.Count > 0)
+            {
+                T _object = _idleQueue.Dequeue();
+                destoryEvent?.Invoke(_object);
+            }
+        }
+    }
+}
