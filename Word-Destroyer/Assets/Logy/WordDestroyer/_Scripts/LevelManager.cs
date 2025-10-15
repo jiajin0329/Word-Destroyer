@@ -11,17 +11,17 @@ namespace Logy.WordDestroyer
         [SerializeField]
         private LevelDatas _levelDatas;
         [SerializeField]
-        private WordGeneratorModel _wordGeneratorModel;
+        private WordGenerator _wordGenerator;
 
         public LevelManager(LevelDatas _levelDatas)
         {
             this._levelDatas = _levelDatas;
-            _wordGeneratorModel = new(_levelDatas);
+            _wordGenerator = new(_levelDatas);
         }
 
         public void Initialize()
         {
-            _wordGeneratorModel.Initialize(_levelDatas);
+            _wordGenerator.Initialize(_levelDatas);
         }
 
         public async UniTaskVoid Start(CancellationToken _cancellationToken)
@@ -30,7 +30,7 @@ namespace Logy.WordDestroyer
             int _generateAmount = _wordGeneratorSetting.generateAmount;
             int _generateIntervalMs = _wordGeneratorSetting.generateIntervalMs;
 
-            await _wordGeneratorModel.RepeatGenerate(_generateAmount, _generateIntervalMs, _cancellationToken);
+            await _wordGenerator.RepeatGenerate(_generateAmount, _generateIntervalMs, _cancellationToken);
         }
 
         public void Tick()

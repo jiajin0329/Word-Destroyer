@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TMPro;
 using UnityEngine;
 
 namespace Logy.WordDestroyer
@@ -10,6 +9,7 @@ namespace Logy.WordDestroyer
     {
         private LevelDatas _levelDatas;
         private WordGeneratorModel _wordGeneratorModel;
+        private WordGenerator _wordGenerator;
         private CancellationTokenSource _cancellationTokenSource;
 
         [Test]
@@ -95,13 +95,13 @@ namespace Logy.WordDestroyer
         public async Task CheckStart()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _wordGeneratorModel = new(_levelDatas);
-            _wordGeneratorModel.Initialize(_levelDatas);
+            _wordGenerator = new(_levelDatas);
+            _wordGenerator.Initialize(_levelDatas);
             _cancellationTokenSource = new();
 
-            await _wordGeneratorModel.RepeatGenerate(100, 0, _cancellationTokenSource.Token);
+            await _wordGenerator.RepeatGenerate(100, 0, _cancellationTokenSource.Token);
             
-            Assert.AreEqual(100, _wordGeneratorModel.currentCount);
+            Assert.AreEqual(100, _wordGenerator.currentCount);
         }
     }
 }

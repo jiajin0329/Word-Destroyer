@@ -534,10 +534,11 @@ MonoBehaviour:
     _levelDatas:
       <wordSetting>k__BackingField: {fileID: 11400000, guid: 52e6fa7c6af8c494f9b65bce99eda9c6, type: 2}
       <wordGeneratorSetting>k__BackingField: {fileID: 11400000, guid: d9f1aa39d2b628345bc9b61429764398, type: 2}
-    _wordGeneratorModel:
-      _wordViewObjectPool:
-        _startAmount: 10
-        _wordClone: {fileID: 0}
+    _wordGenerator:
+      _model:
+        _wordViewObjectPool:
+          _startAmount: 10
+          _wordClone: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
