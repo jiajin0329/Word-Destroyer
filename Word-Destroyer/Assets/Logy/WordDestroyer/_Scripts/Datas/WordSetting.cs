@@ -7,14 +7,14 @@ namespace Logy.WordDestroyer
     public class WordSetting : ScriptableObject
     {
         [field: SerializeField]
-        public GameObject wordPrefabs { get; private set; }
+        public GameObject wordPrefab { get; private set; }
         
         [field: SerializeField]
         public WordStat[] wordStats { get; private set; }
 
         public WordSetting(GameObject _wordPrefabs, WordStat[] _wordStats)
         {
-            wordPrefabs = _wordPrefabs;
+            wordPrefab = _wordPrefabs;
             wordStats = _wordStats;
         }
 

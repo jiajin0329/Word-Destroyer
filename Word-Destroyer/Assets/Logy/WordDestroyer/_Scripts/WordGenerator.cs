@@ -9,8 +9,8 @@ namespace Logy.WordDestroyer
     public class WordGenerator
     {
         private LevelDatas _levelDatas;
-        [SerializeField]
-        private WordGeneratorModel _model;
+        private WordGeneratorModel _model = new();
+        [field: SerializeField]
         public int currentCount { get; private set; }
 
         public class GenerateParam
@@ -20,16 +20,9 @@ namespace Logy.WordDestroyer
             public string wordName;
         }
 
-        public WordGenerator(LevelDatas _levelDatas)
+        public void Initialize(LevelDatas _levelDatas)
         {
             this._levelDatas = _levelDatas;
-            _model = new(_levelDatas);
-        }
-
-        public void Initialize(LevelDatas _levelDatas = null)
-        {
-            if(_levelDatas != null)
-                this._levelDatas = _levelDatas;
             _model.Initialize(_levelDatas);
         }
 

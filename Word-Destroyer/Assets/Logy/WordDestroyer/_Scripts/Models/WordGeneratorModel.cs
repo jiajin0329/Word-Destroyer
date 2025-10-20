@@ -1,14 +1,11 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Logy.WordDestroyer
 {
-    [Serializable]
     public class WordGeneratorModel
     {
         private LevelDatas _levelDatas;
-        [SerializeField]
-        private WordViewObjectPool _wordViewObjectPool;
 
         public struct GenerateParam
         {
@@ -17,17 +14,9 @@ namespace Logy.WordDestroyer
             public string wordName;
         }
 
-        public WordGeneratorModel(LevelDatas _levelDatas)
+        public void Initialize(LevelDatas _levelDatas)
         {
             this._levelDatas = _levelDatas;
-            _wordViewObjectPool = new(_levelDatas.wordSetting, 10);
-        }
-
-        public void Initialize(LevelDatas _levelDatas = null)
-        {
-            if(_levelDatas != null)
-                this._levelDatas = _levelDatas;
-            _wordViewObjectPool.Initialize(_levelDatas.wordSetting);
         }
 
         /// <summary>
@@ -35,14 +24,20 @@ namespace Logy.WordDestroyer
         /// </summary>
         public Word Generate(GenerateParam _param)
         {
-            WordModel _wordModel = new WordMoveDown(_param.wordStat, _param.wordPosition, -6f);
+            Word _word = _levelDatas.wordObjectPool.Get();
 
-            WordView _wordView = _wordViewObjectPool.Get();
-            _wordView.SetTextName(_param.wordName);
-            _wordView.SetPosition(_param.wordPosition);
-            _wordView.SetGameObjectActive(true);
+            _word.SetStat(_param.wordStat);
+            _word.SetPosition(_param.wordPosition);
+            _word.SetTextName(_param.wordName);
+            _word.SetGameObjectActive(true);
 
-            Word _word = new(_wordModel, _param.wordStat, _wordView);
+            UnityAction _attackListener = () =>
+            {
+                _levelDatas.AddWaitRemoveWordList(_word);
+                Debug.Log($"{_word.GetViewTextName()} attack");
+            };
+
+            _word.AddAttackListener(_attackListener);
 
             _levelDatas.AddWord(_word);
 

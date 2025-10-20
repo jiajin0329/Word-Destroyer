@@ -18,15 +18,9 @@ namespace Logy.WordDestroyer
             this._textMeshPro = _textMeshPro;
         }
 
-        public void SetGameObjectActive(bool _set)
-        {
-            _gameObject.SetActive(_set);
-        }
+        public void SetGameObjectActive(bool _set) => _gameObject.SetActive(_set);
 
-        public Vector3 GetPosition()
-        {
-            return _transform.position;
-        }
+        public Vector3 GetPosition() => _transform.position;
 
         public void SetPosition(Vector3 _position)
         {
@@ -37,20 +31,11 @@ namespace Logy.WordDestroyer
             }
         }
 
-        public string GetTextName()
-        {
-            return _textMeshPro.text;
-        }
+        public string GetTextName() => _textMeshPro.text;
 
-        public void SetTextName(string _name)
-        {
-            _textMeshPro.text = _name;
-        }
+        public void SetTextName(string _set) => _textMeshPro.text = _set;
 
-        public void Destory()
-        {
-            Object.Destroy(_gameObject);
-        }
+        public void Destory() => Object.Destroy(_gameObject);
 
         public static WordView BuildTestWordView(string _textName)
         {

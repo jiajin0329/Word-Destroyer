@@ -11,17 +11,20 @@ namespace Logy.WordDestroyer
         [SerializeField]
         private LevelDatas _levelDatas;
         [SerializeField]
-        private WordGenerator _wordGenerator;
+        private WordGenerator _wordGenerator = new();
+        [SerializeField]
+        private WordAttacker _wordDestroyer = new();
 
         public LevelManager(LevelDatas _levelDatas)
         {
             this._levelDatas = _levelDatas;
-            _wordGenerator = new(_levelDatas);
         }
 
         public void Initialize()
         {
+            _levelDatas.Initialize();
             _wordGenerator.Initialize(_levelDatas);
+            _wordDestroyer.Initialize(_levelDatas);
         }
 
         public async UniTaskVoid Start(CancellationToken _cancellationToken)
@@ -35,15 +38,9 @@ namespace Logy.WordDestroyer
 
         public void Tick()
         {
-            WordsTick();
-        }
-
-        private void WordsTick()
-        {
-            foreach(Word _word in _levelDatas.wordHashSet)
-            {
-                _word.Tick();
-            }
+            _levelDatas.TickWordHashSet();
+            _wordDestroyer.Tick();
+            _levelDatas.RemoveWordByWordWillRemoveList();
         }
     }
 }
