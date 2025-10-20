@@ -4,20 +4,20 @@ namespace Logy.WordDestroyer
 {
     public class WordViewObjectPoolUnitTest
     {
-        private WordViewObjectPool _objectPool;
+        private WordObjectPool _objectPool;
 
         [Test]
         public void CheckCreate10()
         {
             BuildObjectPool(10);
-
+            
             Assert.AreEqual(10, _objectPool.idleCount);
         }
 
         private void BuildObjectPool(ushort _startAmount)
         {
-            _objectPool = new(WordSetting.BuildTestSetting(), _startAmount);
-            _objectPool.Initialize();
+            _objectPool = new(_startAmount);
+            _objectPool.Initialize(WordSetting.BuildTestSetting());
         }
 
         [Test]
@@ -34,7 +34,6 @@ namespace Logy.WordDestroyer
                 Assert.IsNotNull(_object);
                 Assert.AreEqual(0, _objectPool.idleCount);
             }
-
             
             Assert.AreEqual(10, _objectPool.usingCount);
         }

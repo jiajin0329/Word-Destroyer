@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using TMPro;
 using UnityEngine;
 
 namespace Logy.WordDestroyer
@@ -10,19 +9,23 @@ namespace Logy.WordDestroyer
     {
         private LevelDatas _levelDatas;
         private WordGeneratorModel _wordGeneratorModel;
+        private WordGenerator _wordGenerator;
         private CancellationTokenSource _cancellationTokenSource;
 
         [Test]
         public void CheckGenerate()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _wordGeneratorModel = new(_levelDatas);
+            _levelDatas.Initialize();
+            _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
-            Word _word = _wordGeneratorModel.Generate(BuildGenerateParam(Vector3.zero, "Test"));
+            var _word = _wordGeneratorModel.Generate(BuildGenerateParam(Vector3.zero, "Test"));
 
-            Assert.AreEqual(1, _levelDatas.wordHashSet.Count);
+            Assert.AreEqual(1, _levelDatas.GetWordHashSetCount());
+            Assert.IsTrue(_levelDatas.WordHashSetContains(_word));
             Assert.AreEqual("Test", _word.GetViewTextName());
+            Assert.AreEqual(1 ,_levelDatas.GetWordDictionarWordQueueCount(_word.GetViewTextName()));
         }
 
         private WordGeneratorModel.GenerateParam BuildGenerateParam(Vector3 _wordPosition, string _wordName)
@@ -43,7 +46,8 @@ namespace Logy.WordDestroyer
         public void CheckGenerateWordLoadStat()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _wordGeneratorModel = new(_levelDatas);
+            _levelDatas.Initialize();
+            _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
             int _count = 0;
@@ -51,7 +55,7 @@ namespace Logy.WordDestroyer
             {
                 _count++;
                 Word _word = _wordGeneratorModel.Generate(BuildGenerateParam(Vector3.zero, $"Test{_count}"));
-                Assert.AreEqual(_levelDatas.wordSetting.wordStats[_word.stat.index], _word.stat);
+                Assert.AreEqual(_levelDatas.wordSetting.wordStats[_word.GetStat().index], _word.GetStat());
             }
         }
 
@@ -62,7 +66,8 @@ namespace Logy.WordDestroyer
         public void CheckGenerateWordPosition()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _wordGeneratorModel = new(_levelDatas);
+            _levelDatas.Initialize();
+            _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
             int _count = 0;
@@ -95,13 +100,14 @@ namespace Logy.WordDestroyer
         public async Task CheckStart()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _wordGeneratorModel = new(_levelDatas);
-            _wordGeneratorModel.Initialize(_levelDatas);
+            _levelDatas.Initialize();
+            _wordGenerator = new();
+            _wordGenerator.Initialize(_levelDatas);
             _cancellationTokenSource = new();
 
-            await _wordGeneratorModel.RepeatGenerate(100, 0, _cancellationTokenSource.Token);
+            await _wordGenerator.RepeatGenerate(100, 0, _cancellationTokenSource.Token);
             
-            Assert.AreEqual(100, _wordGeneratorModel.currentCount);
+            Assert.AreEqual(100, _wordGenerator.currentCount);
         }
     }
 }

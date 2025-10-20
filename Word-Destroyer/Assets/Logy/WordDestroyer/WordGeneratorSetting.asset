@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WordGeneratorSetting
   m_EditorClassIdentifier: 
   <generateAmount>k__BackingField: 100
-  <generateIntervalMs>k__BackingField: 500
+  <generateInterval>k__BackingField: 0.5
   <wordNames>k__BackingField:
   - A
   - B

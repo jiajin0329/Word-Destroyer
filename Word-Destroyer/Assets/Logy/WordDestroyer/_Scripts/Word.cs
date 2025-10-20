@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Logy.WordDestroyer
 {
@@ -8,14 +9,34 @@ namespace Logy.WordDestroyer
     {
         private WordModel _model;
         private WordView _view;
-        public WordStat stat { get; private set; }
 
-        public Word(WordModel _model, WordStat _stat, WordView _view)
+        public Word(WordModel _model, WordView _view)
         {
             this._model = _model;
-            stat = _stat;
             this._view = _view;
         }
+
+        public WordStat GetStat() => _model.stat;
+
+        public void SetStat(WordStat _set) => _model.stat = _set;
+
+        public void SetPosition(Vector3 _set)
+        {
+            _model.position = _set;
+            _view.SetPosition(_set);
+        }
+
+        public Vector3 GetViewPosition() => _view.GetPosition();
+
+        public string GetViewTextName() => _view.GetTextName();
+
+        public void SetTextName(string _set) => _view.SetTextName(_set);
+
+        public void SetGameObjectActive(bool _set) => _view.SetGameObjectActive(_set);
+
+        public void AddAttackListener(UnityAction _listener) => _model.attackAction += _listener;
+        
+        public void ClearAttackListener() => _model.attackAction = null;
 
         public void Tick()
         {
@@ -23,14 +44,11 @@ namespace Logy.WordDestroyer
             _view.SetPosition(_model.position);
         }
 
-        public Vector3 GetViewPosition()
-        {
-            return _view.GetPosition();
-        }
+        public void Destory() => _view.Destory();
 
-        public string GetViewTextName()
+        public static Word BuildTestWord(string _wordName)
         {
-            return _view.GetTextName();
+            return new(WordModel.BuildTestWordModel(), WordView.BuildTestWordView(_wordName));
         }
     }
 }

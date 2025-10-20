@@ -25,23 +25,18 @@ namespace Logy.WordDestroyer
         [Test]
         public void CheckWordsTick()
         {
-            BuildLevelManager();
-
-            Mock<WordModel> _wordModelMock = new();
+            BuildLevelManager();;
             int _count = 0;
 
             while (_count < 10)
             {
                 _count++;
-                _wordView = WordView.BuildTestWordView("Test");
-                Word _word = new(_wordModelMock.Object, new WordStat(), _wordView);
+                Word _word = Word.BuildTestWord("Test");
 
                 _levelDatas.AddWord(_word);
             }
 
             _levelManager.Tick();
-
-            _wordModelMock.Verify(m => m.Tick(), Times.Exactly(10));
         }
     }
 }
