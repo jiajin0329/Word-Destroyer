@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Logy.WordDestroyer
 {
-    public class WordViewObjectPoolUnitTest
+    public class WordObjectPoolUnitTest
     {
         private WordObjectPool _objectPool;
 

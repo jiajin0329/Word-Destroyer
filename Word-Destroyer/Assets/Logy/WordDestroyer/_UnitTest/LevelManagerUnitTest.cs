@@ -33,7 +33,7 @@ namespace Logy.WordDestroyer
                 _count++;
                 Word _word = Word.BuildTestWord("Test");
 
-                _levelDatas.AddWord(_word);
+                _levelDatas.wordGeneratorDatas.AddWord(_word);
             }
 
             _levelManager.Tick();

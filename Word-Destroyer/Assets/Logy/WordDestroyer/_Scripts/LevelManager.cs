@@ -38,9 +38,9 @@ namespace Logy.WordDestroyer
 
         public void Tick()
         {
-            _levelDatas.TickWordHashSet();
+            _levelDatas.wordGeneratorDatas.TickWordHashSet();
             _wordDestroyer.Tick();
-            _levelDatas.RemoveWordByWordWillRemoveList();
+            _levelDatas.wordGeneratorDatas.RemoveWordByWordWillRemoveList();
         }
     }
 }

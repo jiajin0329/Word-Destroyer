@@ -28,10 +28,10 @@ namespace Logy.WordDestroyer
         {
             if (_inputString.Length < 1) return;
 
-            Word _word = _levelDatas.RemoveWord(_inputString.ToString().ToUpper());
+            Word _word = _levelDatas.wordGeneratorDatas.RemoveWord(_inputString.ToString().ToUpper());
 
             if (_word == null) return;
-            _levelDatas.wordObjectPool.Release(_word);
+            _levelDatas.wordGeneratorDatas.wordObjectPool.Release(_word);
         }
     }
 }

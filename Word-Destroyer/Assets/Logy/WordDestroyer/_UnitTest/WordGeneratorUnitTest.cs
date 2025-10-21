@@ -22,10 +22,10 @@ namespace Logy.WordDestroyer
 
             var _word = _wordGeneratorModel.Generate(BuildGenerateParam(Vector3.zero, "Test"));
 
-            Assert.AreEqual(1, _levelDatas.GetWordHashSetCount());
-            Assert.IsTrue(_levelDatas.WordHashSetContains(_word));
+            Assert.AreEqual(1, _levelDatas.wordGeneratorDatas.GetWordHashSetCount());
+            Assert.IsTrue(_levelDatas.wordGeneratorDatas.WordHashSetContains(_word));
             Assert.AreEqual("Test", _word.GetViewTextName());
-            Assert.AreEqual(1 ,_levelDatas.GetWordDictionarWordQueueCount(_word.GetViewTextName()));
+            Assert.AreEqual(1 ,_levelDatas.wordGeneratorDatas.GetWordDictionarWordQueueCount(_word.GetViewTextName()));
         }
 
         private WordGeneratorModel.GenerateParam BuildGenerateParam(Vector3 _wordPosition, string _wordName)
