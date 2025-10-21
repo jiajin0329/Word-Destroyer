@@ -11,7 +11,6 @@ namespace Logy.WordDestroyer
         public void CheckAddWord()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
             _word = Word.BuildTestWord("Test");
 
@@ -26,7 +25,6 @@ namespace Logy.WordDestroyer
         public void CheckRemoveWord()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
             _word = Word.BuildTestWord("Test");
 
@@ -42,7 +40,6 @@ namespace Logy.WordDestroyer
         public void CheckRemoveRemovedWord()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
             _word = Word.BuildTestWord("Test");
 
@@ -59,7 +56,6 @@ namespace Logy.WordDestroyer
         public void CheckRemoveUnexistWord()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
             _word = Word.BuildTestWord("Test");
 
@@ -74,7 +70,6 @@ namespace Logy.WordDestroyer
         public void CheckRemoveWordByWordWillRemoveList()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
             _word = Word.BuildTestWord("Test");
 
@@ -94,11 +89,10 @@ namespace Logy.WordDestroyer
         public void CheckReset()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
 
-            _levelDatas.Reset();
+            _levelDatas.playerDatas.Reset();
 
-            Assert.AreEqual(100, _levelDatas.playerDatas.hp);
+            Assert.AreEqual(100, _levelDatas.playerDatas.GetHp());
         }
     }
 }

@@ -16,7 +16,6 @@ namespace Logy.WordDestroyer
         public void CheckGenerate()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
             _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
@@ -46,7 +45,6 @@ namespace Logy.WordDestroyer
         public void CheckGenerateWordLoadStat()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
             _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
@@ -66,7 +64,6 @@ namespace Logy.WordDestroyer
         public void CheckGenerateWordPosition()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
             _wordGeneratorModel = new();
             _wordGeneratorModel.Initialize(_levelDatas);
 
@@ -100,7 +97,6 @@ namespace Logy.WordDestroyer
         public async Task CheckStart()
         {
             _levelDatas = LevelDatas.BuildTestDatas();
-            _levelDatas.Initialize();
             _wordGenerator = new();
             _wordGenerator.Initialize(_levelDatas);
             _cancellationTokenSource = new();

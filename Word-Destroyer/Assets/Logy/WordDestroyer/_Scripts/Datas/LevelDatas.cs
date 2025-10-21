@@ -34,16 +34,12 @@ namespace Logy.WordDestroyer
             wordGeneratorDatas.wordObjectPool.Initialize(wordSetting);
         }
 
-        public void Reset()
-        {
-            playerDatas.hp = 100;
-        }
-
         public static LevelDatas BuildTestDatas()
         {
             WordGeneratorSetting _wordGeneratorSetting = new();
-
-            return new LevelDatas(WordSetting.BuildTestSetting(), _wordGeneratorSetting);
+            LevelDatas _levelDatas = new(WordSetting.BuildTestSetting(), _wordGeneratorSetting);
+            _levelDatas.Initialize();
+            return _levelDatas;
         }
     }
 }

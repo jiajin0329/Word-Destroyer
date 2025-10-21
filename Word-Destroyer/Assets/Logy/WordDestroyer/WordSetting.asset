@@ -16,4 +16,4 @@ MonoBehaviour:
   <wordStats>k__BackingField:
   - <index>k__BackingField: 0
     <moveSpeed>k__BackingField: 1
-    <attack>k__BackingField: 1
+    <attack>k__BackingField: 10

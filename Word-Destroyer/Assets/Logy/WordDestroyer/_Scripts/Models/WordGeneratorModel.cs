@@ -34,6 +34,7 @@ namespace Logy.WordDestroyer
             UnityAction _attackListener = () =>
             {
                 _levelDatas.wordGeneratorDatas.AddWaitRemoveWordList(_word);
+                _levelDatas.playerDatas.LoseHp(_word.GetStat().attack);
                 Debug.Log($"{_word.GetViewTextName()} attack");
             };
 
