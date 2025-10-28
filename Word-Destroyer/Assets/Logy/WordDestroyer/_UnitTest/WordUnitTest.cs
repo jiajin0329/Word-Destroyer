@@ -36,17 +36,21 @@ namespace Logy.WordDestroyer
         }
 
         [Test]
-        public void CheckWordMoveDownAttackAction()
+        public void CheckWordModelAttackAction()
         {
-            // Build MoveDown
+            // Build WordModel
             WordStat _stat = new(0, 1f, 1);
             Vector3 _position = new Vector3(0f, -6f, 0f);
             float _attackPosY = -5f;
             _wordModel = new WordModel(_position, _attackPosY);
             _wordModel.stat = _stat;
 
+            bool _isAttack = false;
+            _wordModel.attackAction = () => _isAttack = true;
+
             _wordModel.Tick();
 
+            Assert.AreEqual(true, _isAttack);
             Assert.AreEqual(_attackPosY, _wordModel.position.y);
         }
 
@@ -77,6 +81,25 @@ namespace Logy.WordDestroyer
             _wordView.SetTextName("Test");
 
             Assert.AreEqual("Test", _wordView.GetTextName());
+        }
+
+        [Test]
+        public void CheckLosePlayerHp()
+        {
+            PlayerDatas _playerDatas = new();
+
+            // Build WordModel
+            WordStat _stat = new(0, 1f, 10);
+            Vector3 _position = new Vector3(0f, -6f, 0f);
+            float _attackPosY = -5f;
+            _wordModel = new WordModel(_position, _attackPosY);
+            _wordModel.stat = _stat;
+            _wordModel.attackAction = () => _playerDatas.LoseHp(_stat.attack);
+
+            int _previousHp = _playerDatas.GetHp();
+            _wordModel.Tick();
+
+            Assert.AreEqual(_stat.attack, _previousHp - _playerDatas.GetHp());
         }
     }
 }

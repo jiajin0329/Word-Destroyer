@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Logy.WordDestroyer
 {
-    public class WordViewObjectPoolUnitTest
+    public class WordObjectPoolUnitTest
     {
         private WordObjectPool _objectPool;
 
@@ -34,7 +34,8 @@ namespace Logy.WordDestroyer
                 Assert.IsNotNull(_object);
                 Assert.AreEqual(0, _objectPool.idleCount);
             }
-            
+
+            Assert.AreEqual(0, _objectPool.idleCount);
             Assert.AreEqual(10, _objectPool.usingCount);
         }
 
@@ -54,6 +55,24 @@ namespace Logy.WordDestroyer
             }
 
             Assert.AreEqual(1, _objectPool.idleCount);
+        }
+
+        [Test]
+        public void CheckReleaseAll()
+        {
+            BuildObjectPool(0);
+
+            byte _count = 0;
+            while (_count < 10)
+            {
+                _count++;
+                _objectPool.Get();
+            }
+
+            _objectPool.ReleaseAll();
+
+            Assert.AreEqual(10, _objectPool.idleCount);
+            Assert.AreEqual(0, _objectPool.usingCount);
         }
     }
 }

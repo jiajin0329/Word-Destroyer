@@ -8,16 +8,18 @@ namespace Logy.GeneralCommonV01
         private Queue<T> _idleQueue = new();
         private HashSet<T> _usingHashSet = new();
 
-        public CreateEvent createEvent;
+        public EventReturnObject createEvent;
+        public UnityAction<T> releaseEvent;
         public UnityAction<T> destoryEvent;
 
-        public delegate T CreateEvent();
+        public delegate T EventReturnObject();
         public int idleCount => _idleQueue.Count;
         public int usingCount => _usingHashSet.Count;
 
-        public ObjectPool(CreateEvent _createEvent, UnityAction<T> _destoryEvent = null, ushort _startAmount = 0)
+        public ObjectPool(EventReturnObject _createEvent, UnityAction<T> _releaseEvent, UnityAction<T> _destoryEvent = null, ushort _startAmount = 0)
         {
             createEvent = _createEvent;
+            releaseEvent = _releaseEvent;
             destoryEvent = _destoryEvent;
 
             BuildObject(_startAmount);
@@ -47,7 +49,7 @@ namespace Logy.GeneralCommonV01
         {
             if (createEvent == null)
             {
-                Debug.Log($"{nameof(CreateEvent)} is null");
+                Debug.Log($"{nameof(EventReturnObject)} is null");
                 return default;
             }
 
@@ -70,6 +72,19 @@ namespace Logy.GeneralCommonV01
                 _usingHashSet.Remove(_object);
 
             _idleQueue.Enqueue(_object);
+
+            releaseEvent.Invoke(_object);
+        }
+
+        public void ReleaseAll()
+        {
+            foreach (T _object in _usingHashSet)
+            {
+                releaseEvent.Invoke(_object);
+                _idleQueue.Enqueue(_object);
+            }
+            
+            _usingHashSet.Clear();
         }
 
         /// <summary>

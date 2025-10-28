@@ -1,4 +1,3 @@
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -7,17 +6,16 @@ namespace Logy.WordDestroyer
     public class GameManager : MonoBehaviour
     {
         [SerializeField]
-        private LevelManager _levelManager;
+        private LevelManager _levelManager = new(new LevelDatas(), new(new()), null, new());
 
         private void Awake()
         {
             _levelManager.Initialize();
         }
 
-        private void Start()
+        private async UniTaskVoid Start()
         {
-            CancellationToken _cancellation = this.GetCancellationTokenOnDestroy();
-            _levelManager.Start(_cancellation).Forget();
+            await _levelManager.Start();
         }
 
         private void Update()

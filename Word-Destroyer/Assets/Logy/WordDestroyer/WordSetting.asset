@@ -15,5 +15,5 @@ MonoBehaviour:
   <wordPrefab>k__BackingField: {fileID: 5872706130162128033, guid: c47d2bac5fd36ae4c91edfc01f8b3f28, type: 3}
   <wordStats>k__BackingField:
   - <index>k__BackingField: 0
-    <moveSpeed>k__BackingField: 3
-    <attack>k__BackingField: 1
+    <moveSpeed>k__BackingField: 2
+    <attack>k__BackingField: 10

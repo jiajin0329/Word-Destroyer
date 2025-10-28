@@ -8,10 +8,10 @@ namespace Logy.GeneralCommonV01
 
         public TestObjectPool (ushort _startAmount)
         {
-            _objectPool = new(Create, Destory, _startAmount);
+            _objectPool = new(CreateObject, ReleaseObject, DestoryObject, _startAmount);
         }
 
-        private Test Create()
+        private Test CreateObject()
         {
             Test _object = new();
             _object.isCreate = true;
@@ -19,25 +19,23 @@ namespace Logy.GeneralCommonV01
             return _object;
         }
 
-        private void Destory(Test _object)
+        private void ReleaseObject(Test _object)
+        {
+            _object.isUse = false;
+        }
+
+        private void DestoryObject(Test _object)
         {
             _object.isDestory = true;
         }
 
-        public Test Get()
-        {
-            return _objectPool.Get();
-        }
+        public Test Get() => _objectPool.Get();
 
-        public void Release(Test _object)
-        {
-            _objectPool.Release(_object);
-        }
+        public void Release(Test _object) => _objectPool.Release(_object);
 
-        public void Destory()
-        {
-            _objectPool.Destory();
-        }
+        public void ReleaseAll() => _objectPool.ReleaseAll();
+
+        public void Destory() => _objectPool.Destory();
     }
 }
 

@@ -24,7 +24,7 @@ namespace Logy.WordDestroyer
         /// </summary>
         public Word Generate(GenerateParam _param)
         {
-            Word _word = _levelDatas.wordObjectPool.Get();
+            Word _word = _levelDatas.wordGeneratorDatas.wordObjectPool.Get();
 
             _word.SetStat(_param.wordStat);
             _word.SetPosition(_param.wordPosition);
@@ -33,13 +33,14 @@ namespace Logy.WordDestroyer
 
             UnityAction _attackListener = () =>
             {
-                _levelDatas.AddWaitRemoveWordList(_word);
-                Debug.Log($"{_word.GetViewTextName()} attack");
+                _levelDatas.wordGeneratorDatas.AddWaitRemoveWordList(_param.wordName);
+                _levelDatas.playerDatas.LoseHp(_word.GetStat().attack);
+                Debug.Log($"{_param.wordName} attack");
             };
 
             _word.AddAttackListener(_attackListener);
 
-            _levelDatas.AddWord(_word);
+            _levelDatas.wordGeneratorDatas.AddWord(_word);
 
             return _word;
         }
