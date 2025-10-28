@@ -12,6 +12,7 @@ namespace Logy.GeneralCommonV01
             _objectPool = new(10);
 
             Assert.AreEqual(10, _objectPool.idleCount);
+            Assert.AreEqual(0, _objectPool.usingCount);
             Assert.IsTrue(_objectPool.Get().isCreate);
         }
 
@@ -30,7 +31,6 @@ namespace Logy.GeneralCommonV01
                 Assert.AreEqual(0, _objectPool.idleCount);
             }
 
-            
             Assert.AreEqual(10, _objectPool.usingCount);
         }
 
@@ -44,12 +44,32 @@ namespace Logy.GeneralCommonV01
             {
                 _count++;
                 var _object = _objectPool.Get();
+                _object.isUse = true;
                 _objectPool.Release(_object);
 
                 Assert.AreEqual(0, _objectPool.usingCount);
+                Assert.AreEqual(false, _object.isUse);
             }
 
             Assert.AreEqual(1, _objectPool.idleCount);
+        }
+
+        [Test]
+        public void CheckReleaseAll()
+        {
+            _objectPool = new(0);
+
+            byte _count = 0;
+            while (_count < 10)
+            {
+                _count++;
+                _objectPool.Get();
+            }
+
+            _objectPool.ReleaseAll();
+
+            Assert.AreEqual(10, _objectPool.idleCount);
+            Assert.AreEqual(0, _objectPool.usingCount);
         }
 
         [Test]

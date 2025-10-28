@@ -1,21 +1,27 @@
-using System;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Logy.WordDestroyer
 {
-    [Serializable]
     public class WordAttacker
     {
-        private LevelDatas _levelDatas;
         private StringBuilder _inputString = new();
-        [SerializeField]
-        private WordAttackerModel _model = new();
+        private WordAttackerModel _model;
+
+        public WordAttacker(WordAttackerModel _model)
+        {
+            this._model = _model;
+        }
 
         public void Initialize(LevelDatas _levelDatas)
         {
-            this._levelDatas = _levelDatas;
             _model.Initialize(_levelDatas);
+        }
+
+        public void Reset()
+        {
+            _model.Reset();
         }
 
         public void Tick()

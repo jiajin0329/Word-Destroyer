@@ -12,8 +12,8 @@ namespace Logy.WordDestroyer
         public int idleCount => _objectPool.idleCount;
         public int usingCount => _objectPool.usingCount;
         private WordSetting _setting;
-        [SerializeField]
-        private ushort _startAmount = 10;
+        [field: SerializeField]
+        public ushort startAmount { get; private set; } = 10;
         [SerializeField]
         private TextMeshPro _wordPrefabClone;
         private bool _isFirstCreate;
@@ -21,17 +21,22 @@ namespace Logy.WordDestroyer
 
         public WordObjectPool(ushort _startAmount)
         {
-            this._startAmount = _startAmount;
+            this.startAmount = _startAmount;
         }
-        
+
         public void Initialize(WordSetting _setting)
         {
             this._setting = _setting;
             _isFirstCreate = _wordPrefabClone == null;
-            _objectPool = new(CreateEvent, DestoryEvent, _startAmount);
+            _objectPool = new(CreateObject, ReleaseObject, DestoryObject, startAmount);
+        }
+        
+        public void ReSet()
+        {
+            _objectPool.ReleaseAll();
         }
 
-        private Word CreateEvent()
+        private Word CreateObject()
         {
             // New WordModel
             WordModel _wordModel = new WordModel(new Vector3(0f, 6f, 0f), -5f);
@@ -60,19 +65,19 @@ namespace Logy.WordDestroyer
             return new(_wordModel, _wordView);
         }
 
-        private void DestoryEvent(Word _object)
-        {
-            _object.Destory();
-        }
-
-        public Word Get() => _objectPool.Get();
-
-        public void Release(Word _object)
+        private void ReleaseObject(Word _object)
         {
             _object.ClearAttackListener();
             _object.SetGameObjectActive(false);
-            _objectPool.Release(_object);
         }
+
+        private void DestoryObject(Word _object) => _object.Destory();
+
+        public Word Get() => _objectPool.Get();
+
+        public void Release(Word _object) => _objectPool.Release(_object);
+
+        public void ReleaseAll() => _objectPool.ReleaseAll();
 
         public void Destory()
         {

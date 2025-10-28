@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Logy.WordDestroyer
 {
@@ -13,7 +14,17 @@ namespace Logy.WordDestroyer
         public WordObjectPool wordObjectPool = new(10);
         private HashSet<Word> _wordHashSet = new();
         private Dictionary<string, Queue<Word>> _wordDictionar = new();
-        private List<Word> _waitRemoveWordList = new();
+        private List<string> _lateRemoveWordList = new();
+        private UnityAction _removeWordEvent;
+
+        public void ReSet()
+        {
+            wordObjectPool.ReleaseAll();
+            _wordHashSet.Clear();
+            _wordDictionar.Clear();
+            _lateRemoveWordList.Clear();
+            _removeWordEvent = null;
+        }
 
         /// <summary>
         /// Add to WordGeneratorData's wordHashSet.
@@ -54,11 +65,8 @@ namespace Logy.WordDestroyer
             return 0;
         }
 
-        public int GetWaitRemoveWordListCount() => _waitRemoveWordList.Count;
+        public int GetWaitRemoveWordListCount() => _lateRemoveWordList.Count;
 
-        /// <summary>
-        /// Remove to WordGeneratorData's wordHashSet.
-        /// </summary>
         public Word RemoveWord(string _wordName)
         {
             if (!_wordDictionar.ContainsKey(_wordName) || _wordDictionar[_wordName].Count < 1)
@@ -66,31 +74,35 @@ namespace Logy.WordDestroyer
 
             Word _word = _wordDictionar[_wordName].Dequeue();
             _wordHashSet.Remove(_word);
+            wordObjectPool.Release(_word);
+
+            _removeWordEvent?.Invoke();
+
             return _word;
         }
 
-        public void AddWaitRemoveWordList(Word _word)
+        public void AddWaitRemoveWordList(string _wordName)
         {
-            _waitRemoveWordList.Add(_word);
+            _lateRemoveWordList.Add(_wordName);
         }
 
         public void RemoveWordByWordWillRemoveList()
         {
-            if (_waitRemoveWordList.Count < 1)
+            if (_lateRemoveWordList.Count < 1)
                 return;
 
             int i;
-            Word _word;
-            for (i = 0; i < _waitRemoveWordList.Count; i++)
+            for (i = 0; i < _lateRemoveWordList.Count; i++)
             {
-                _word = _waitRemoveWordList[i];
-                _wordDictionar[_word.GetViewTextName()].Dequeue();
-                _wordHashSet.Remove(_word);
-                wordObjectPool.Release(_word);
+                RemoveWord(_lateRemoveWordList[i]);
             }
 
-            _waitRemoveWordList.Clear();
+            _lateRemoveWordList.Clear();
         }
+
+        public void AddRemoveWordListener(UnityAction _listener) => _removeWordEvent += _listener;
+
+        public void RemoveRemoveWordListener(UnityAction _listener) => _removeWordEvent -= _listener;
         
         public void TickWordHashSet()
         {
